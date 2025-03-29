@@ -8,4 +8,3 @@ urlpatterns = [
     path('api/v1/wallets/<uuid:wallet_uuid>/', WalletDetailView.as_view(), name='wallet_detail'),
     path('api/v1/wallets/<uuid:wallet_uuid>/operation/', WalletOperationView.as_view(), name='wallet_operation'),
 ]
-
