@@ -1,0 +1,42 @@
+version: '3.12'
+
+services:
+  db:
+    image: postgres:15
+    container_name: wallet_db
+    restart: always
+    environment:
+      POSTGRES_DB: wallet_db
+      POSTGRES_USER: wallet_user
+      POSTGRES_PASSWORD: wallet_pass
+    volumes:
+      - wallet_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wallet_app
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=online_wallet_drf.settings
+      - DEBUG=0
+      - SECRET_KEY=supersecretkey
+      - ALLOWED_HOSTS=*
+      - DB_NAME=wallet_db
+      - DB_USER=wallet_user
+      - DB_PASSWORD=wallet_pass
+      - DB_HOST=db
+      - DB_PORT=5432
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  wallet_db_data:
