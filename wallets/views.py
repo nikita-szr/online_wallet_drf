@@ -14,6 +14,7 @@ class WalletListCreateView(generics.ListCreateAPIView):
 class WalletDetailView(generics.RetrieveDestroyAPIView):
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
+    lookup_field = "uuid"
 
 
 class WalletOperationView(APIView):
